@@ -1,5 +1,4 @@
 <?php
-// Developer Details:
 // Developer: Brainhub24
 // Contact: github@brainhub24.com
 // Version: 1.0.0
