@@ -1,17 +1,20 @@
 <?php
 // Developer: Brainhub24
 // Contact: github@brainhub24.com
-// Version: 1.0.0
+// Version: 1.1.0
 // Codename: GatewayRedirector
 // Changelog:
+// - v1.1.0 (Improvement):
+//   * Added logging function for error handling
 // - v1.0.0 (Initial release):
-//   * Initial implementation of redirection with UTM parameters
+//   * Initial release - implementation of redirection with UTM parameters
 
 // Enable error reporting if debug mode is activated
 if (isset($_GET['debug']) && $_GET['debug'] === 'view') {
     error_reporting(E_ALL); // Set error reporting to display all types of errors
     ini_set('display_errors', 0); // Display errors in the browser
-    // In a production environment, it's recommended to disable error display and log errors instead.. do not use it in prod systems pls. :)
+    // In a production environment, it's recommended to disable error display and log errors instead..
+    // Do not use it in prod systems pls. :)
 }
 
 /**
@@ -35,9 +38,23 @@ function redirectVisitor($url) {
         exit();
     } else {
         // Log the error if headers are already sent
-        error_log("Redirection failed. Headers already sent.");
+        logError("Redirection failed. Headers already sent.");
         // hmm...
     }
+}
+
+/**
+ * Function to log errors or events
+ * 
+ * @param string $message The message to log
+ */
+function logError($message) {
+    $logFile = 'error.log'; // Define the log file path
+    $logTimestamp = date('[Y-m-d H:i:s]'); // Get current timestamp
+    $logMessage = $logTimestamp . ' ' . $message . PHP_EOL; // Format log message with timestamp
+    
+    // Append log message to the log file
+    file_put_contents($logFile, $logMessage, FILE_APPEND);
 }
 
 // Redirection URL
